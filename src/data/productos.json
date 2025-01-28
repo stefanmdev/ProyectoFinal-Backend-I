@@ -1,0 +1,92 @@
+[
+  {
+      "id": 1,
+      "title": "Pastillas de frenos",
+      "description": "Repuesto importado de francia",
+      "price": 25.30,
+      "img": "Sin Imagen",
+      "code": "2736-80",
+      "stock": 15
+  },
+  {
+      "id": 2,
+      "title": "Discos de frenos",
+      "description": "Repuesto importado de francia",
+      "price": 60.50,
+      "img": "Sin Imagen",
+      "code": "3918-80",
+      "stock": 30
+  },
+  {
+      "id": 3,
+      "title": "Filtro de Aceite",
+      "description": "Repuesto importado de francia",
+      "price": 12.50,
+      "img": "Sin Imagen",
+      "code": "0091-80",
+      "stock": 300
+  },
+  {
+      "id": 4,
+      "title": "Filtro de aire",
+      "description": "Repuesto importado de francia",
+      "price": 8.50,
+      "img": "Sin Imagen",
+      "code": "0010-80",
+      "stock": 251
+  },
+  {
+      "id": 5,
+      "title": "Filtro de nafta",
+      "description": "Repuesto importado de francia",
+      "price": 11.80,
+      "img": "Sin Imagen",
+      "code": "0009-80",
+      "stock": 120
+  },
+  {
+      "id": 6,
+      "title": "Bujis",
+      "description": "Repuesto importado de francia",
+      "price": 80.51,
+      "img": "Sin Imagen",
+      "code": "0913-80",
+      "stock": 15
+  },
+  {
+      "id": 7,
+      "title": "Amortiguadorres",
+      "description": "Repuesto importado de francia",
+      "price": 150.30,
+      "img": "Sin Imagen",
+      "code": "1421-80",
+      "stock": 8
+  },
+  {
+      "id": 8,
+      "title": "Embrague",
+      "description": "Repuesto importado de francia",
+      "price": 342.80,
+      "img": "Sin Imagen",
+      "code": "0716-80",
+      "stock": 4
+  },
+  {
+      "id": 9,
+      "title": "Distribucion",
+      "description": "Repuesto importado de francia",
+      "price": 340.60,
+      "img": "Sin Imagen",
+      "code": "1090-80",
+      "stock": 12
+  },
+  {
+      "id": 10,
+      "title": "Lamparas H7",
+      "description": "Repuesto importado de francia",
+      "price": 3.50,
+      "img": "Sin Imagen",
+      "code": "0012-80",
+      "stock": 150
+  }
+]

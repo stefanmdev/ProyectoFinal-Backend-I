@@ -1,23 +1,24 @@
-const express = require('express');
-const productsRouter = require('./routes/products.routes');
-const cartsRouter = require('./routes/carts.routes');
-const { log } = require('console');
+import express from "express"; 
+const app = express(); 
 
-const app = express();
-const PORT = 8080;
+const PUERTO = 8080;
 
+import cartRouter from "./routes/cart.router.js";
+import productRouter from "./routes/product.router.js";
+
+                                //Middleware
 app.use(express.json());
+app.use(express.urlencoded({extended: true})); 
 
-// Rutas
-app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
+                                //Rutas
+app.use("/api/products", productRouter); 
+app.use("/api/carts", cartRouter); 
 
-// Servidor
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${PORT}`);
-});
+                               //Listen
+app.listen(PUERTO, () => {
+  console.log(`Server iniciado en  http://localhost:${PUERTO}`);
+})
 
 app.get('/', (req, res) => {
-  res.send('Bienvenido a mi servidor (Backend Primera Entrega)');
+    res.send('Bienvenido mi servidor (Backend Primera Entrega)');
 });
-
