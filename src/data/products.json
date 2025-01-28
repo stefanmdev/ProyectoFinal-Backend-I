@@ -1,0 +1,140 @@
+[
+  {
+    "id": "1",
+    "title": "Laptop Gamer",
+    "description": "Laptop de alta potencia para gaming",
+    "code": "LAPG123",
+    "price": 1500,
+    "status": true,
+    "stock": 10,
+    "category": "Electronics",
+    "thumbnails": [
+      "laptop1.jpg",
+      "laptop2.jpg"
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Teclado Mecánico",
+    "description": "Teclado mecánico con luces RGB",
+    "code": "KEY123",
+    "price": 80,
+    "status": true,
+    "stock": 25,
+    "category": "Accessories",
+    "thumbnails": [
+      "keyboard1.jpg"
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Mouse Inalámbrico",
+    "description": "Mouse inalámbrico ergonómico",
+    "code": "MOUSE123",
+    "price": 25,
+    "status": true,
+    "stock": 50,
+    "category": "Accessories",
+    "thumbnails": [
+      "mouse1.jpg"
+    ]
+  },
+  {
+    "id": "4",
+    "title": "Monitor 4K",
+    "description": "Monitor de alta resolución 4K",
+    "code": "MON123",
+    "price": 400,
+    "status": true,
+    "stock": 15,
+    "category": "Electronics",
+    "thumbnails": [
+      "monitor1.jpg",
+      "monitor2.jpg"
+    ]
+  },
+  {
+    "id": "5",
+    "title": "Smartphone",
+    "description": "Teléfono móvil de última generación",
+    "code": "PHONE123",
+    "price": 900,
+    "status": true,
+    "stock": 20,
+    "category": "Electronics",
+    "thumbnails": [
+      "smartphone1.jpg"
+    ]
+  },
+  {
+    "id": "6",
+    "title": "Tablet",
+    "description": "Tablet compacta y funcional",
+    "code": "TAB123",
+    "price": 300,
+    "status": true,
+    "stock": 18,
+    "category": "Electronics",
+    "thumbnails": [
+      "tablet1.jpg"
+    ]
+  },
+  {
+    "id": "7",
+    "title": "Audífonos Bluetooth",
+    "description": "Audífonos inalámbricos con cancelación de ruido",
+    "code": "HEAD123",
+    "price": 150,
+    "status": true,
+    "stock": 30,
+    "category": "Accessories",
+    "thumbnails": [
+      "headphones1.jpg"
+    ]
+  },
+  {
+    "id": "8",
+    "title": "Silla Gamer",
+    "description": "Silla ergonómica para gamers",
+    "code": "CHAIR123",
+    "price": 250,
+    "status": true,
+    "stock": 12,
+    "category": "Furniture",
+    "thumbnails": [
+      "chair1.jpg"
+    ]
+  },
+  {
+    "id": "9",
+    "title": "Cámara Web",
+    "description": "Cámara web de alta definición",
+    "code": "CAM123",
+    "price": 70,
+    "status": true,
+    "stock": 20,
+    "category": "Electronics",
+    "thumbnails": [
+      "camera1.jpg"
+    ]
+  },
+  {
+    "id": "10",
+    "title": "Router WiFi",
+    "description": "Router inalámbrico de alta velocidad",
+    "code": "ROUT123",
+    "price": 60,
+    "status": true,
+    "stock": 40,
+    "category": "Electronics",
+    "thumbnails": [
+      "router1.jpg"
+    ]
+  },
+  {
+    "id": "1738027486701"
+  },
+  {
+    "id": "1738027830207"
+  }
+]
