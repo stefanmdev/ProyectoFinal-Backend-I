@@ -1,74 +1,73 @@
 import { Router } from "express";
-const router = Router(); 
+import ProductManager from "../managers/product.manager.js";
 
-import ProductManager from "../managers/product-manager.js"; 
-const manager = new ProductManager("./src/data/productos.json"); 
+const router = Router();
+const manager = new ProductManager();
 
-// Obtener todos los productos
+// GET /api/products con paginación, búsqueda y ordenamiento
 router.get("/", async (req, res) => {
-    let limit = req.query.limit; 
-    const productos = await manager.getProducts(); 
-    if(limit) {
-        res.send(productos.slice(0, limit)); 
-    } else {
-        res.send(productos); 
-    }
+  try {
+    const result = await manager.getProducts(req.query);
+    // Construir links de paginación
+    const { prevPage, nextPage } = result;
+    const baseUrl = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
+    result.prevLink = result.hasPrevPage ? `${baseUrl}?page=${prevPage}` : null;
+    result.nextLink = result.hasNextPage ? `${baseUrl}?page=${nextPage}` : null;
+    res.json({
+      status: "success",
+      payload: result.docs,
+      totalPages: result.totalPages,
+      prevPage: result.prevPage,
+      nextPage: result.nextPage,
+      page: result.page,
+      hasPrevPage: result.hasPrevPage,
+      hasNextPage: result.hasNextPage,
+      prevLink: result.prevLink,
+      nextLink: result.nextLink
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Obtener producto por ID
+// GET /api/products/:pid
 router.get("/:pid", async (req, res) => {
-    let id = parseInt(req.params.pid); 
-    const productoBuscado = await manager.getProductById(id); 
-    res.send(productoBuscado); 
+  try {
+    const product = await manager.getProductById(req.params.pid);
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Agregar un nuevo producto
+// POST /api/products
 router.post("/", async (req, res) => {
-    try {
-        const nuevoProducto = req.body;
-        await manager.addProduct(nuevoProducto);
-        res.status(201).json({ message: "Producto agregado correctamente" });
-    } catch (error) {
-        res.status(500).json({ error: "Error al agregar el producto" });
-    }
+  try {
+    const newProduct = await manager.addProduct(req.body);
+    res.status(201).json({ message: "Producto agregado correctamente", product: newProduct });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Actualizar un producto existente
+// PUT /api/products/:pid
 router.put("/:pid", async (req, res) => {
-    try {
-        const id = parseInt(req.params.pid);
-        const updateData = req.body;
-        const productos = await manager.getProducts();
-        const index = productos.findIndex(p => p.id === id);
-        
-        if (index === -1) {
-            return res.status(404).json({ error: "Producto no encontrado" });
-        }
-        
-        productos[index] = { ...productos[index], ...updateData };
-        await manager.guardarArchivo(productos);
-        res.json({ message: "Producto actualizado correctamente" });
-    } catch (error) {
-        res.status(500).json({ error: "Error al actualizar el producto" });
-    }
+  try {
+    const updatedProduct = await manager.updateProduct(req.params.pid, req.body);
+    res.json({ message: "Producto actualizado correctamente", product: updatedProduct });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// Eliminar un producto por ID
+// DELETE /api/products/:pid
 router.delete("/:pid", async (req, res) => {
-    try {
-        const id = parseInt(req.params.pid);
-        const productos = await manager.getProducts();
-        const nuevoArray = productos.filter(p => p.id !== id);
-        
-        if (productos.length === nuevoArray.length) {
-            return res.status(404).json({ error: "Producto no encontrado" });
-        }
-        
-        await manager.guardarArchivo(nuevoArray);
-        res.json({ message: "Producto eliminado correctamente" });
-    } catch (error) {
-        res.status(500).json({ error: "Error al eliminar el producto" });
-    }
+  try {
+    await manager.deleteProduct(req.params.pid);
+    res.json({ message: "Producto eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 export default router;
