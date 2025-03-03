@@ -40,7 +40,7 @@ Este proyecto es un backend para un sistema de e-commerce que maneja **productos
 
 1. **Clona** este repositorio:
 ```bash
-git clone https://github.com/tu-usuario/ecommerce-backend.git
+git clone https://github.com/stefanmdev/ProyectoFinal-Backend-I.git
 ```
 
 2. **Entra** en la carpeta del proyecto:
