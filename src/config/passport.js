@@ -1,71 +1,47 @@
-import express from "express";
 import passport from "passport";
-import jwt from "jsonwebtoken";
+import local from "passport-local";
+import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import User from "../models/User.js";
-import { createHash } from "../utils/bcrypt.js";
+import { isValidPassword } from "../utils/bcrypt.js";
 
-const router = express.Router();
+const LocalStrategy = local.Strategy;
 
-//Registro
-router.post("/register", async (req, res) => {
-  const { first_name, last_name, email, age, password } = req.body;
+const initializePassport = () => {
+  // Estrategia login local
+  passport.use(
+    "login",
+    new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
+      try {
+        const user = await User.findOne({ email });
+        if (!user || !isValidPassword(password, user.password)) {
+          return done(null, false);
+        }
+        return done(null, user);
+      } catch (err) {
+        return done(err);
+      }
+    })
+  );
 
-  try {
-    const exists = await User.findOne({ email });
-    if (exists) return res.status(400).json({ error: "El usuario ya existe" });
-
-    const hashedPassword = createHash(password);
-
-    const newUser = new User({
-      first_name,
-      last_name,
-      email,
-      age,
-      password: hashedPassword,
-    });
-
-    await newUser.save();
-    res.status(201).json({ message: "Usuario registrado con éxito" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error al registrar usuario" });
-  }
-});
-
-//Login
-router.post("/login", async (req, res, next) => {
-  passport.authenticate("login", { session: false }, (err, user, info) => {
-    if (err) return next(err);
-    if (!user) return res.status(401).json({ message: "Credenciales inválidas" });
-
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" }
-    );
-
-    res
-      .cookie("token", token, { httpOnly: true })
-      .json({ message: "Login exitoso", user: { id: user._id, email: user.email } });
-  })(req, res, next);
-});
-
-//Ruta protegida: current
-router.get(
-  "/current",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    res.json({
-      user: {
-        id: req.user._id,
-        email: req.user.email,
-        role: req.user.role,
-        first_name: req.user.first_name,
-        last_name: req.user.last_name,
-        age: req.user.age,
+  // Estrategia JWT
+  passport.use(
+    "jwt",
+    new JWTStrategy(
+      {
+        jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies?.token]),
+        secretOrKey: process.env.JWT_SECRET,
       },
-    });
-  }
-);
+      async (jwt_payload, done) => {
+        try {
+          const user = await User.findById(jwt_payload.id);
+          if (!user) return done(null, false);
+          return done(null, user);
+        } catch (err) {
+          return done(err);
+        }
+      }
+    )
+  );
+};
 
-export default router;
+export default initializePassport;

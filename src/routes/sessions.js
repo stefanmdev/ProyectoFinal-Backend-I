@@ -1,13 +1,10 @@
 import express from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import passport from 'passport';
+import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import { createHash, isValidPassword } from '../utils/bcrypt.js';
 
 const router = express.Router();
-
-const createHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password);
 
 // Registro
 router.post('/register', async (req, res) => {
@@ -30,7 +27,6 @@ router.post('/register', async (req, res) => {
     await newUser.save();
     res.status(201).json({ message: 'Usuario registrado con éxito' });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: 'Error al registrar usuario' });
   }
 });
@@ -56,7 +52,6 @@ router.post('/login', async (req, res, next) => {
 // Current
 router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json({
-    status: 'success',
     user: {
       id: req.user._id,
       email: req.user.email,
