@@ -162,6 +162,14 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Purchase Cart",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	]
 }

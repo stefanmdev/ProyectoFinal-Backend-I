@@ -1,6 +1,7 @@
-# E-Commerce Backend
+# Proyecto Final - Programación Backend II
 
-Este proyecto es un backend para un sistema de e-commerce que maneja **productos**, **carritos** de compra y **usuarios**. Está desarrollado con **Node.js**, **Express** y **MongoDB** (usando Mongoose). Además, incluye autenticación JWT con Passport y colecciones de Postman para probar los endpoints fácilmente.
+Este proyecto es un backend completo para un sistema de e-commerce que maneja **productos**, **carritos** de compra, **autenticación de usuarios** con JWT y **generación de tickets** de compra.  
+Desarrollado con **Node.js**, **Express** y **MongoDB** (Mongoose).
 
 ## Tabla de Contenidos
 
@@ -19,29 +20,29 @@ Este proyecto es un backend para un sistema de e-commerce que maneja **productos
 
 ## Características
 
-- **Node.js + Express**: Backend eficiente y modular.
-- **MongoDB + Mongoose**: Persistencia de datos no relacional.
-- **Passport.js + JWT**: Autenticación con cookies seguras.
-- **Bcrypt**: Hash de contraseñas.
-- **Mongoose Paginate**: Paginación avanzada.
-- **Dotenv**: Variables de entorno.
-- **Semillas automáticas**: Carga de productos de ejemplo al iniciar.
+- **Node.js + Express**: Servidor robusto y modular.
+- **MongoDB + Mongoose**: Base de datos no relacional.
+- **Passport.js (Local y JWT)**: Sistema de autenticación seguro.
+- **Bcrypt**: Encriptación de contraseñas.
+- **Mongoose Paginate**: Paginación y filtros en productos.
+- **uuid**: Generación de códigos únicos para tickets.
+- **Dotenv**: Variables de entorno centralizadas.
 
 ---
 
 ## Requisitos Previos
 
-- **Node.js** (v14+)
+- **Node.js** (v14 o superior)
 - **npm** o **yarn**
-- **MongoDB** local o Atlas
-- **Postman** (opcional para probar endpoints)
+- **MongoDB** local o MongoDB Atlas
+- **Postman** (opcional para pruebas de API)
 
 ---
 
 ## Instalación
 
 ```bash
-git clone https://github.com/stefanmdev/ProyectoFinal-Backend-I.git
+git clone https://github.com/stefanmdev/ProyectoFinal-Backend-II.git
 cd ecommerce-backend
 npm install
 ```
@@ -50,12 +51,12 @@ npm install
 
 ## Configuración
 
-Crear un archivo `.env` en la raíz:
+Crear un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 
-```env
-MONGODB_URI=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net/
+```dotenv
+MONGODB_URI=tu_string_de_conexión_mongodb
+JWT_SECRET=tu_secreto_para_jwt
 PORT=8080
-JWT_SECRET=tu_clave_supersecreta
 ```
 
 ✅ Asegurate de que `.env` esté en `.gitignore`.
@@ -68,11 +69,12 @@ JWT_SECRET=tu_clave_supersecreta
 npm run dev
 ```
 
-Verás algo como:
+Cuando esté funcionando verás:
 
 ```
 Servidor escuchando en http://localhost:8080
-Conexión a MongoDB exitosa
+MongoDB conectado exitosamente
+La colección de productos ya tiene datos
 ```
 
 ---
@@ -82,44 +84,46 @@ Conexión a MongoDB exitosa
 ### Products
 (Ruta base: `/api/products`)
 
-- `GET /`: Listado con filtros, orden y paginación.
-- `GET /:pid`: Producto por ID.
-- `POST /`: Crear producto.
-- `PUT /:pid`: Editar producto.
+- `GET /`: Listar productos (con filtros, paginación y ordenamiento).
+- `GET /:pid`: Obtener producto por ID.
+- `POST /`: Crear nuevo producto.
+- `PUT /:pid`: Actualizar producto existente.
 - `DELETE /:pid`: Eliminar producto.
 
 ### Carts
 (Ruta base: `/api/carts`)
 
-- `POST /`: Crear carrito.
-- `GET /:cid`: Ver carrito (`populate`).
-- `POST /:cid/product/:pid`: Agregar producto.
-- `PUT /:cid`: Reemplazar productos.
-- `PUT /:cid/products/:pid`: Cambiar cantidad.
-- `DELETE /:cid/products/:pid`: Quitar producto.
-- `DELETE /:cid`: Borrar carrito.
+- `POST /`: Crear un carrito vacío.
+- `GET /:cid`: Obtener carrito por ID (populate de productos).
+- `POST /:cid/product/:pid`: Agregar producto al carrito.
+- `PUT /:cid`: Reemplazar todos los productos del carrito.
+- `PUT /:cid/product/:pid`: Actualizar cantidad de un producto en el carrito.
+- `DELETE /:cid/product/:pid`: Eliminar producto específico del carrito.
+- `DELETE /:cid`: Vaciar todo el carrito.
+- `POST /:cid/purchase`: Finalizar compra y generar ticket.
 
 ### Sessions / Autenticación
 (Ruta base: `/api/sessions`)
 
-- `POST /register`: Crea un usuario (`first_name`, `last_name`, `email`, `age`, `password`).
-- `POST /login`: Inicia sesión y devuelve un JWT en una cookie.
-- `GET /current`: Devuelve los datos del usuario autenticado (requiere cookie `token`).
+- `POST /register`: Registrar nuevo usuario (`first_name`, `last_name`, `email`, `age`, `password`).
+- `POST /login`: Iniciar sesión, devuelve JWT en cookie `token`.
+- `GET /current`: Ver datos del usuario autenticado (requiere cookie `token`).
 
 ---
 
 ## Colecciones de Postman
 
-En la carpeta `.collections/` se incluyen:
+Están en la carpeta `.collections/`:
 
 - `Products API.postman_collection.json`
 - `Carts API.postman_collection.json`
 - `Coderhouse_Auth_API.postman_collection.json`
 
-### Usar en Postman:
-1. Abrí Postman
-2. Click en **Import**
-3. Seleccioná los `.json` de la carpeta `.collections`
-4. Probá los endpoints fácilmente ✅
+### ¿Cómo importar en Postman?
+1. Abrí **Postman**.
+2. Clic en **Import**.
+3. Elegí los archivos `.json` de la carpeta `.collections`.
+4. Probá los endpoints fácilmente ✅.
 
 ---
+

@@ -1,73 +1,50 @@
 import { Router } from "express";
-import ProductManager from "../managers/product.manager.js";
+import passport from "passport";
+import {
+  getProducts,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct
+} from "../controllers/product.controller.js";
+import { validateCreateProduct, validateUpdateProduct } from "../middlewares/productValidator.js";
+import { checkValidations } from "../middlewares/validationResult.js";
+import { authorizeRole } from "../middlewares/authorizeRole.js";
 
 const router = Router();
-const manager = new ProductManager();
 
 // GET /api/products con paginación, búsqueda y ordenamiento
-router.get("/", async (req, res) => {
-  try {
-    const result = await manager.getProducts(req.query);
-    // Construir links de paginación
-    const { prevPage, nextPage } = result;
-    const baseUrl = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
-    result.prevLink = result.hasPrevPage ? `${baseUrl}?page=${prevPage}` : null;
-    result.nextLink = result.hasNextPage ? `${baseUrl}?page=${nextPage}` : null;
-    res.json({
-      status: "success",
-      payload: result.docs,
-      totalPages: result.totalPages,
-      prevPage: result.prevPage,
-      nextPage: result.nextPage,
-      page: result.page,
-      hasPrevPage: result.hasPrevPage,
-      hasNextPage: result.hasNextPage,
-      prevLink: result.prevLink,
-      nextLink: result.nextLink
-    });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.get("/", getProducts);
 
 // GET /api/products/:pid
-router.get("/:pid", async (req, res) => {
-  try {
-    const product = await manager.getProductById(req.params.pid);
-    res.json(product);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+router.get("/:pid", getProductById);
 
-// POST /api/products
-router.post("/", async (req, res) => {
-  try {
-    const newProduct = await manager.addProduct(req.body);
-    res.status(201).json({ message: "Producto agregado correctamente", product: newProduct });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// POST /api/products (crear producto) - solo admin
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  authorizeRole(["admin"]),
+  validateCreateProduct,
+  checkValidations,
+  addProduct
+);
 
-// PUT /api/products/:pid
-router.put("/:pid", async (req, res) => {
-  try {
-    const updatedProduct = await manager.updateProduct(req.params.pid, req.body);
-    res.json({ message: "Producto actualizado correctamente", product: updatedProduct });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// PUT /api/products/:pid (actualizar producto) - solo admin
+router.put(
+  "/:pid",
+  passport.authenticate("jwt", { session: false }),
+  authorizeRole(["admin"]),
+  validateUpdateProduct,
+  checkValidations,
+  updateProduct
+);
 
-// DELETE /api/products/:pid
-router.delete("/:pid", async (req, res) => {
-  try {
-    await manager.deleteProduct(req.params.pid);
-    res.json({ message: "Producto eliminado correctamente" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// DELETE /api/products/:pid (eliminar producto) - solo admin
+router.delete(
+  "/:pid",
+  passport.authenticate("jwt", { session: false }),
+  authorizeRole(["admin"]),
+  deleteProduct
+);
 
 export default router;
